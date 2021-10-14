@@ -26,7 +26,7 @@ module.exports = (env, argv) => {
                 filename: "../index.html",
                 template: "./public/index.html",
                 // scriptLoading: "blocking",
-                inject: false,
+                // inject: "body",
             }),
             new CopyPlugin({
                 patterns: [
