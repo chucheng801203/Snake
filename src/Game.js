@@ -98,7 +98,7 @@ Game.prototype.update = function () {
         });
     }
 
-    var speed = this.snake ? parseInt(600 / this.snake.maxLength) + 1 : 30; 
+    var speed = this.snake ? parseInt(600 / this.snake.maxLength) + 1 : 30;
     setTimeout(function () {
         that.update();
     }, speed);
@@ -106,7 +106,7 @@ Game.prototype.update = function () {
 
 Game.prototype.gameEnd = function () {
     this.start = false;
-    
+
     var length = this.snake.body.length;
     var scoreElem = document.querySelector("#game .panel .score");
     var score = (length - this.snakeDefaultLength) * 5;

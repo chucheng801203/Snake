@@ -12,13 +12,19 @@ window.addEventListener("keydown", function (e) {
 var mousePos = new Vector();
 window.addEventListener("touchstart", function (e) {
     if (e.changedTouches.length > 0) {
-        mousePos = new Vector(e.changedTouches[0].pageX, e.changedTouches[0].pageY);
+        mousePos = new Vector(
+            e.changedTouches[0].pageX,
+            e.changedTouches[0].pageY
+        );
     }
 });
 
-var touchMoveHandle = throttle(function(e) {
+var touchMoveHandle = throttle(function (e) {
     if (game.start && e.changedTouches.length > 0) {
-        var newPos = new Vector(e.changedTouches[0].pageX, e.changedTouches[0].pageY);
+        var newPos = new Vector(
+            e.changedTouches[0].pageX,
+            e.changedTouches[0].pageY
+        );
         var d = newPos.sub(mousePos);
         if (Math.abs(d.x) > Math.abs(d.y)) {
             if (Math.abs(d.x) > 10) {
@@ -47,7 +53,7 @@ window.addEventListener("touchmove", function (e) {
 
 function throttle(func, wait) {
     var n = Date.now();
-    return function(e) {
+    return function (e) {
         var now = Date.now();
         if (now - n > wait) {
             func(e);
