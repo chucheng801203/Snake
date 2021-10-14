@@ -6,8 +6,9 @@ var Game = function () {
     this.bw = 30;
     this.bs = 2;
     this.gameWidth = 20;
-    this.bgColor = ["#dacd12", "rgba(75, 2, 158, 0.227)"];
+    this.bgColor = ["#eeb825", "rgba(75, 2, 158, 0.227)"];
     this.snake = null;
+    this.snakeDefaultLength = 0;
     this.start = false;
     this.food = [];
 };
@@ -97,18 +98,26 @@ Game.prototype.update = function () {
         });
     }
 
+    var speed = this.snake ? parseInt(600 / this.snake.maxLength) + 1 : 30; 
     setTimeout(function () {
         that.update();
-    }, 30);
+    }, speed);
 };
 
 Game.prototype.gameEnd = function () {
     this.start = false;
-    document.querySelector("#game .panel").style.display = "block";
+    
+    var length = this.snake.body.length;
+    var scoreElem = document.querySelector("#game .panel .score");
+    var score = (length - this.snakeDefaultLength) * 5;
+    scoreElem.innerHTML = "Score: " + (score >= 0 ? score : 0);
+    scoreElem.style.display = "block";
+    document.querySelector("#game .panel").style.display = "flex";
 };
 
 Game.prototype.gameStart = function () {
     this.snake = new Snake(this);
+    this.snakeDefaultLength = this.snake.maxLength;
     this.food = [];
     this.generateFood();
     this.start = true;
