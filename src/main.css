@@ -5,7 +5,7 @@ body {
     min-width: 320px;
     margin: 0;
     overflow: hidden;
-    background: #ffc919;
+    background: rgb(30, 30, 30);
     -webkit-touch-callout: none;
     -webkit-user-select: none;
     -khtml-user-select: none;
@@ -30,7 +30,8 @@ body {
     box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.3);
     max-width: calc(100% - 16px) !important;
     max-height: calc(100% - 16px) !important;
-    border: 8px solid #eeb825;
+    border: 8px solid #dbdbdb;
+    background-color: #dbdbdb;
     border-radius: 16px;
     overflow: hidden;
 }
@@ -42,8 +43,8 @@ body {
     justify-content: center;
     align-items: center;
     flex-direction: column;
-    border-radius: 8px;
-    background-color: rgba(0, 0, 0, 0.4);
+    border-radius: 16px;
+    background-color: rgba(0, 0, 0, 0.6);
 }
 #game .start-btn {
     padding: 12px 24px;
