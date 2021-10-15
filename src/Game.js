@@ -6,7 +6,7 @@ var Game = function () {
     this.bw = 30;
     this.bs = 0;
     this.gameWidth = 20;
-    this.bgColor = ["#eeb825", "rgba(75, 2, 158, 0.227)"];
+    this.bgColor = ["#e4e4e4", "#dbdbdb"];
     this.snake = null;
     this.snakeDefaultLength = 0;
     this.start = false;
@@ -20,8 +20,8 @@ Game.prototype.init = function () {
     this.canvas.width =
         this.bw * this.gameWidth + this.bs * (this.gameWidth - 1);
     this.canvas.height = this.canvas.width;
-    game.style.width = this.canvas.width;
-    game.style.height = this.canvas.width;
+    game.style.width = this.canvas.width + "px";
+    game.style.height = this.canvas.width + "px";
 
     this.update();
     this.render();
