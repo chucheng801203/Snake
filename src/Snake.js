@@ -4,8 +4,8 @@ var Snake = function (game) {
     this.game = game;
     this.body = [];
     this.head = new Vector();
-    this.maxLength = 15;
-    this.step = 0.2;
+    this.maxLength = 30;
+    this.step = 0.1;
     this.speed = new Vector(this.step, 0);
     this.color = "#9500f8";
     this.direction = "right";
@@ -94,18 +94,19 @@ Snake.prototype.checkBoundary = function (gameWidth) {
 
 Snake.prototype.draw = function () {
     var that = this;
+    var d = that.game.bw / 8 / this.body.length;
     this.body.forEach(function (v, i) {
-        that.drawBody(v, that.color, i === that.body.length - 1);
+        var r = that.game.bw / 2 - d * (that.body.length - i);
+        that.drawBody(v, r, that.color, i === that.body.length - 1);
     });
 };
 
-Snake.prototype.drawBody = function (v, color, isHead) {
+Snake.prototype.drawBody = function (v, r, color, isHead) {
     var pos = this.game.getPosition(v.x, v.y);
-    var r = this.game.bw / 2;
 
     this.game.ctx.save();
-    this.game.ctx.translate(pos.x + r, pos.y + r);
-    this.game.ctx.scale(0.8, 0.8);
+    this.game.ctx.translate(pos.x + this.game.bw / 2, pos.y + this.game.bw / 2);
+    this.game.ctx.scale(0.85, 0.85);
     this.game.ctx.beginPath();
     this.game.ctx.fillStyle = color;
     this.game.ctx.arc(0, 0, r, 0, Math.PI * 2);
