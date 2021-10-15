@@ -4,7 +4,7 @@ import Vector from "./Vector.js";
 
 var Game = function () {
     this.bw = 30;
-    this.bs = 2;
+    this.bs = 0;
     this.gameWidth = 20;
     this.bgColor = ["#eeb825", "rgba(75, 2, 158, 0.227)"];
     this.snake = null;
@@ -98,10 +98,13 @@ Game.prototype.update = function () {
         });
     }
 
-    var speed = this.snake ? parseInt(600 / this.snake.maxLength) + 1 : 30;
-    setTimeout(function () {
-        that.update();
-    }, speed);
+    var speed = this.snake ? parseInt(20 - this.snake.maxLength * 0.1) + 1 : 30;
+    setTimeout(
+        function () {
+            that.update();
+        },
+        speed < 7 ? 7 : speed
+    );
 };
 
 Game.prototype.gameEnd = function () {
@@ -122,6 +125,7 @@ Game.prototype.gameStart = function () {
     this.generateFood();
     this.start = true;
     document.querySelector("#game .panel").style.display = "none";
+    document.querySelector("#game .title").style.display = "none";
 };
 
 export default Game;
