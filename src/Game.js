@@ -20,8 +20,6 @@ Game.prototype.init = function () {
     this.canvas.width =
         this.bw * this.gameWidth + this.bs * (this.gameWidth - 1);
     this.canvas.height = this.canvas.width;
-    game.style.width = this.canvas.width + "px";
-    game.style.height = this.canvas.width + "px";
 
     this.update();
     this.render();
