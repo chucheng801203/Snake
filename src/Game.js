@@ -125,6 +125,7 @@ Game.prototype.gameStart = function () {
     this.generateFood();
     this.start = true;
     document.querySelector("#game .panel").style.display = "none";
+    document.querySelector("#game .title").style.display = "none";
 };
 
 export default Game;
