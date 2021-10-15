@@ -26,6 +26,7 @@ body {
     max-height: calc(100% - 16px) !important;
 }
 #game .mycanvas {
+    display: block;
     color: rgba(75, 2, 158, 0.227);
     box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.3);
     max-width: calc(100% - 16px) !important;
@@ -38,8 +39,10 @@ body {
 #game .panel {
     position: absolute;
     display: flex;
-    width: 100%;
-    height: 100%;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    top: 0;
     justify-content: center;
     align-items: center;
     flex-direction: column;
