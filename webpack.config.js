@@ -27,6 +27,11 @@ module.exports = (env, argv) => {
                 template: "./public/index.html",
                 // scriptLoading: "blocking",
                 inject: false,
+                minify: argv.mode === "development" ? false : {
+                    collapseWhitespace: true,
+                    minifyJS: true,
+                    minifyCSS: true,
+                }
             }),
             new CopyPlugin({
                 patterns: [
