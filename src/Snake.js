@@ -101,11 +101,10 @@ Snake.prototype.checkBoundary = function (gameWidth) {
 };
 
 Snake.prototype.draw = function () {
-    var that = this;
-    var d = that.game.bw / 8 / this.body.length;
-    this.body.forEach(function (v, i) {
-        var r = that.game.bw / 2 - d * (that.body.length - i);
-        that.drawBody(v, r, that.color, i === that.body.length - 1);
+    var d = this.game.bw / 8 / this.body.length;
+    this.body.forEach((v, i) => {
+        var r = this.game.bw / 2 - d * (this.body.length - i);
+        this.drawBody(v, r, this.color, i === this.body.length - 1);
     });
 };
 

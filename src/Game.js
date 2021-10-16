@@ -58,7 +58,6 @@ Game.prototype.generateFood = function () {
 
 Game.prototype.render = function () {
     this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
-    var that = this;
     for (var y = 0; y < this.gameWidth; y++) {
         for (var x = 0; x < this.gameWidth; x++) {
             this.drawBlock(
@@ -70,18 +69,16 @@ Game.prototype.render = function () {
 
     this.snake && this.snake.draw();
 
-    this.food.forEach(function (f) {
+    this.food.forEach((f) => {
         f.draw();
     });
 
-    requestAnimationFrame(function () {
-        that.render();
+    requestAnimationFrame(() => {
+        this.render();
     });
 };
 
 Game.prototype.update = function () {
-    var that = this;
-
     if (this.start) {
         this.snake.update();
 
@@ -89,31 +86,31 @@ Game.prototype.update = function () {
             this.gameEnd();
         }
 
-        this.snake.body.forEach(function (v) {
+        this.snake.body.forEach((v) => {
             if (
-                Math.abs(v.x - that.snake.head.x) < that.snake.step / 1000 &&
-                Math.abs(v.y - that.snake.head.y) < that.snake.step / 1000
+                Math.abs(v.x - this.snake.head.x) < this.snake.step / 1000 &&
+                Math.abs(v.y - this.snake.head.y) < this.snake.step / 1000
             ) {
-                that.gameEnd();
+                this.gameEnd();
             }
         });
 
-        this.food.forEach(function (v, i) {
+        this.food.forEach((v, i) => {
             if (
-                Math.abs(v.x - that.snake.head.x) < that.snake.step / 2 &&
-                Math.abs(v.y - that.snake.head.y) < that.snake.step / 2
+                Math.abs(v.x - this.snake.head.x) < this.snake.step / 2 &&
+                Math.abs(v.y - this.snake.head.y) < this.snake.step / 2
             ) {
-                that.snake.maxLength += 2;
-                that.food.splice(i, 1);
-                that.generateFood();
+                this.snake.maxLength += 2;
+                this.food.splice(i, 1);
+                this.generateFood();
             }
         });
     }
 
     var speed = this.snake ? parseInt(20 - this.snake.maxLength * 0.1) + 1 : 30;
     setTimeout(
-        function () {
-            that.update();
+        () => {
+            this.update();
         },
         speed < 7 ? 7 : speed
     );
