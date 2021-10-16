@@ -3,6 +3,11 @@ import Snake from "./Snake.js";
 import Vector from "./Vector.js";
 
 var Game = function (args = {}) {
+    this.args = args;
+    this.init();
+};
+
+Game.prototype.initArgs = function (args) {
     var defaults = {
         bw: 30,
         bs: 0,
@@ -18,17 +23,19 @@ var Game = function (args = {}) {
             this[argName] = args[argName] ? args[argName] : defaults[argName];
         }
     }
-};
+
+    this.snakeDefaultLength = undefined;
+}
 
 Game.prototype.init = function () {
+    this.initArgs(this.args);
     this.canvas = document.querySelector("#game .mycanvas");
     this.ctx = this.canvas.getContext("2d");
     this.canvas.width =
         this.bw * this.gameWidth + this.bs * (this.gameWidth - 1);
     this.canvas.height = this.canvas.width;
 
-    this.update();
-    this.render();
+    this.drawBg();
 };
 
 Game.prototype.getPosition = function (x, y) {
@@ -40,6 +47,17 @@ Game.prototype.drawBlock = function (v, color) {
 
     this.ctx.fillStyle = color;
     this.ctx.fillRect(pos.x, pos.y, this.bw, this.bw);
+};
+
+Game.prototype.drawBg = function () {
+    for (var y = 0; y < this.gameWidth; y++) {
+        for (var x = 0; x < this.gameWidth; x++) {
+            this.drawBlock(
+                new Vector(x, y),
+                this.bgColor[(y + x) % this.bgColor.length]
+            );
+        }
+    }
 };
 
 Game.prototype.generateFood = function () {
@@ -90,25 +108,19 @@ Game.prototype.getRandomPosition = function () {
 };
 
 Game.prototype.render = function () {
-    this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
-    for (var y = 0; y < this.gameWidth; y++) {
-        for (var x = 0; x < this.gameWidth; x++) {
-            this.drawBlock(
-                new Vector(x, y),
-                this.bgColor[(y + x) % this.bgColor.length]
-            );
-        }
+    if (this.start) {
+        this.drawBg();
+
+        this.snake && this.snake.draw();
+    
+        this.food.forEach((f) => {
+            f.draw();
+        });
+    
+        requestAnimationFrame(() => {
+            this.render();
+        });
     }
-
-    this.snake && this.snake.draw();
-
-    this.food.forEach((f) => {
-        f.draw();
-    });
-
-    requestAnimationFrame(() => {
-        this.render();
-    });
 };
 
 Game.prototype.update = function () {
@@ -138,15 +150,15 @@ Game.prototype.update = function () {
                 this.generateFood();
             }
         });
-    }
 
-    var speed = this.snake ? parseInt(20 - this.snake.maxLength * 0.1) + 1 : 30;
-    setTimeout(
-        () => {
-            this.update();
-        },
-        speed < 7 ? 7 : speed
-    );
+        var speed = this.snake ? parseInt(20 - this.snake.maxLength * 0.1) + 1 : 30;
+        setTimeout(
+            () => {
+                this.update();
+            },
+            speed < 7 ? 7 : speed
+        );
+    }
 };
 
 Game.prototype.gameEnd = function () {
@@ -170,6 +182,9 @@ Game.prototype.gameStart = function () {
     this.start = true;
     document.querySelector("#game .panel").style.display = "none";
     document.querySelector("#game .title").style.display = "none";
+
+    this.update();
+    this.render();
 };
 
 export default Game;

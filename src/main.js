@@ -3,7 +3,6 @@ import Vector from "./Vector.js";
 import "./main.css";
 
 var game = new Game();
-game.init();
 
 window.addEventListener("keydown", function (e) {
     game.start && game.snake.setDirection(e.key.replace("Arrow", ""));
