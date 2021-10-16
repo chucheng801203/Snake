@@ -9,7 +9,6 @@ var Game = function (args = {}) {
         gameWidth: 20,
         bgColor: ["#e4e4e4", "#dbdbdb"],
         snake: null,
-        snakeDefaultLength: 0,
         start: false,
         food: [],
     };
@@ -22,8 +21,7 @@ var Game = function (args = {}) {
 };
 
 Game.prototype.init = function () {
-    var game = document.querySelector("#game");
-    this.canvas = game.querySelector(".mycanvas");
+    this.canvas = document.querySelector("#game .mycanvas");
     this.ctx = this.canvas.getContext("2d");
     this.canvas.width =
         this.bw * this.gameWidth + this.bs * (this.gameWidth - 1);

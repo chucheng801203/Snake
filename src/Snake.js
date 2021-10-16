@@ -140,6 +140,68 @@ Snake.prototype.drawBody = function (v, r, color, isHead) {
         this.game.ctx.fill();
 
         this.game.ctx.fillStyle = "black";
+        // 畫向前看的眼睛
+        var drawEyes = () => {
+            this.game.ctx.beginPath();
+            this.game.ctx.arc(
+                0 + (r * 1) / 2,
+                0 - (r * 2) / 3 - 2,
+                r / 4,
+                0,
+                Math.PI * 2
+            );
+            this.game.ctx.fill();
+
+            this.game.ctx.beginPath();
+            this.game.ctx.arc(
+                0 - (r * 1) / 2,
+                0 - (r * 2) / 3 - 2,
+                r / 4,
+                0,
+                Math.PI * 2
+            );
+            this.game.ctx.fill();
+        };
+
+        var drawFocusEye = (foodPos, eyePos, eyeCenter) => {
+            var dxy = eyePos.sub(foodPos);
+            var length = dxy.length();
+            var sin = dxy.y / length;
+            var cos = dxy.x / length;
+
+            this.game.ctx.beginPath();
+            if (this.direction === "up") {
+                eyeCenter.set(
+                    eyeCenter.x - (cos * r) / 4,
+                    eyeCenter.y - (sin * r) / 4
+                );
+            } else if (this.direction === "down") {
+                eyeCenter.set(
+                    eyeCenter.x + (cos * r) / 4,
+                    eyeCenter.y + (sin * r) / 4
+                );
+            } else if (this.direction === "right") {
+                eyeCenter.set(
+                    eyeCenter.x - (sin * r) / 4,
+                    eyeCenter.y + (cos * r) / 4
+                );
+            } else if (this.direction === "left") {
+                eyeCenter.set(
+                    eyeCenter.x + (sin * r) / 4,
+                    eyeCenter.y - (cos * r) / 4
+                );
+            }
+
+            this.game.ctx.arc(
+                eyeCenter.x,
+                eyeCenter.y,
+                r / 4,
+                0,
+                Math.PI * 2
+            );
+            this.game.ctx.fill();
+        }
+
         if (this.game.food.length > 0) {
             var l = [];
             var food = this.game.food[0];
@@ -166,125 +228,19 @@ Snake.prototype.drawBody = function (v, r, color, isHead) {
                     food.x === v.x &&
                     this.direction === "down")
             ) {
-                this.game.ctx.beginPath();
-                this.game.ctx.arc(
-                    0 + (r * 1) / 2,
-                    0 - (r * 2) / 3 - 2,
-                    r / 4,
-                    0,
-                    Math.PI * 2
-                );
-                this.game.ctx.fill();
-
-                this.game.ctx.beginPath();
-                this.game.ctx.arc(
-                    0 - (r * 1) / 2,
-                    0 - (r * 2) / 3 - 2,
-                    r / 4,
-                    0,
-                    Math.PI * 2
-                );
-                this.game.ctx.fill();
+                drawEyes();
             } else {
                 var foodPos = this.game.getPosition(food.x, food.y);
                 var eyePos = new Vector(pos.x + r - r / 2, pos.y + r - r / 2);
-                var dxy = eyePos.sub(foodPos);
-                var length = dxy.length();
-                var sin = dxy.y / length;
-                var cos = dxy.x / length;
-
-                this.game.ctx.beginPath();
-                var eye1Center = new Vector(0 - r / 2, 0 - r / 2);
-                if (this.direction === "up") {
-                    eye1Center.set(
-                        0 - r / 2 - (cos * r) / 4,
-                        0 - r / 2 - (sin * r) / 4
-                    );
-                } else if (this.direction === "down") {
-                    eye1Center.set(
-                        0 - r / 2 + (cos * r) / 4,
-                        0 - r / 2 + (sin * r) / 4
-                    );
-                } else if (this.direction === "right") {
-                    eye1Center.set(
-                        0 - r / 2 - (sin * r) / 4,
-                        0 - r / 2 + (cos * r) / 4
-                    );
-                } else if (this.direction === "left") {
-                    eye1Center.set(
-                        0 - r / 2 + (sin * r) / 4,
-                        0 - r / 2 - (cos * r) / 4
-                    );
-                }
-
-                this.game.ctx.arc(
-                    eye1Center.x,
-                    eye1Center.y,
-                    r / 4,
-                    0,
-                    Math.PI * 2
-                );
-                this.game.ctx.fill();
+                
+                drawFocusEye(foodPos, eyePos, new Vector(0 - r / 2, 0 - r / 2));
 
                 eyePos = new Vector(pos.x + r + r / 2, pos.y + r - r / 2);
-                dxy = eyePos.sub(foodPos);
-                length = dxy.length();
-                sin = dxy.y / length;
-                cos = dxy.x / length;
 
-                var eye2Center = new Vector(0 + r / 2, 0 - r / 2);
-                if (this.direction === "up") {
-                    eye2Center.set(
-                        0 + r / 2 - (cos * r) / 4,
-                        0 - r / 2 - (sin * r) / 4
-                    );
-                } else if (this.direction === "down") {
-                    eye2Center.set(
-                        0 + r / 2 + (cos * r) / 4,
-                        0 - r / 2 + (sin * r) / 4
-                    );
-                } else if (this.direction === "right") {
-                    eye2Center.set(
-                        0 + r / 2 - (sin * r) / 4,
-                        0 - r / 2 + (cos * r) / 4
-                    );
-                } else if (this.direction === "left") {
-                    eye2Center.set(
-                        0 + r / 2 + (sin * r) / 4,
-                        0 - r / 2 - (cos * r) / 4
-                    );
-                }
-
-                this.game.ctx.beginPath();
-                this.game.ctx.arc(
-                    eye2Center.x,
-                    eye2Center.y,
-                    r / 4,
-                    0,
-                    Math.PI * 2
-                );
-                this.game.ctx.fill();
+                drawFocusEye(foodPos, eyePos, new Vector(0 + r / 2, 0 - r / 2));
             }
         } else {
-            this.game.ctx.beginPath();
-            this.game.ctx.arc(
-                0 + (r * 1) / 2,
-                0 - (r * 2) / 3 - 2,
-                r / 4,
-                0,
-                Math.PI * 2
-            );
-            this.game.ctx.fill();
-
-            this.game.ctx.beginPath();
-            this.game.ctx.arc(
-                0 - (r * 1) / 2,
-                0 - (r * 2) / 3 - 2,
-                r / 4,
-                0,
-                Math.PI * 2
-            );
-            this.game.ctx.fill();
+            drawEyes();
         }
     }
 
