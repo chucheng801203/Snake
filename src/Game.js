@@ -43,14 +43,50 @@ Game.prototype.drawBlock = function (v, color) {
 };
 
 Game.prototype.generateFood = function () {
-    var x = parseInt(Math.random() * this.gameWidth);
-    var y = parseInt(Math.random() * this.gameWidth);
+    var pos = this.getRandomPosition();
+
+    while (this.checkObstacle(pos.x, pos.y)) {
+        pos = this.getRandomPosition();
+    }
+
     this.food.push(
         new Food({
             game: this,
-            v: new Vector(x, y),
+            v: pos,
         })
     );
+};
+
+Game.prototype.checkObstacle = function (x, y) {
+    var check = (v) =>
+        Math.abs(x - v.x) < this.snake.step / 1000 &&
+        Math.abs(y - v.y) < this.snake.step / 1000;
+
+    if (check(this.snake.head)) {
+        return true;
+    }
+
+    var body = this.snake.body;
+    for (var i = 0; i < body.length; i++) {
+        if (check(body[i])) {
+            return true;
+        }
+    }
+
+    for (var i = 0; i < this.food.length; i++) {
+        if (check(this.food[i])) {
+            return true;
+        }
+    }
+
+    return false;
+};
+
+Game.prototype.getRandomPosition = function () {
+    var x = parseInt(Math.random() * this.gameWidth);
+    var y = parseInt(Math.random() * this.gameWidth);
+
+    return new Vector(x, y);
 };
 
 Game.prototype.render = function () {
