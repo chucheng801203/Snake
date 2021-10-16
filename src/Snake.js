@@ -192,15 +192,9 @@ Snake.prototype.drawBody = function (v, r, color, isHead) {
                 );
             }
 
-            this.game.ctx.arc(
-                eyeCenter.x,
-                eyeCenter.y,
-                r / 4,
-                0,
-                Math.PI * 2
-            );
+            this.game.ctx.arc(eyeCenter.x, eyeCenter.y, r / 4, 0, Math.PI * 2);
             this.game.ctx.fill();
-        }
+        };
 
         if (this.game.food.length > 0) {
             var l = [];
@@ -232,7 +226,7 @@ Snake.prototype.drawBody = function (v, r, color, isHead) {
             } else {
                 var foodPos = this.game.getPosition(food.x, food.y);
                 var eyePos = new Vector(pos.x + r - r / 2, pos.y + r - r / 2);
-                
+
                 drawFocusEye(foodPos, eyePos, new Vector(0 - r / 2, 0 - r / 2));
 
                 eyePos = new Vector(pos.x + r + r / 2, pos.y + r - r / 2);
