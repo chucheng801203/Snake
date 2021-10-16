@@ -210,17 +210,11 @@ Snake.prototype.drawBody = function (v, r, color, isHead) {
 
             if (
                 (v.y === food.y &&
-                    food.x - v.x > 0 &&
-                    this.direction === "right") ||
-                (v.y === food.y &&
-                    food.x - v.x < 0 &&
-                    this.direction === "left") ||
-                (v.y - food.y > 0 &&
-                    food.x === v.x &&
-                    this.direction === "up") ||
-                (v.y - food.y < 0 &&
-                    food.x === v.x &&
-                    this.direction === "down")
+                    ((food.x - v.x > 0 && this.direction === "right") ||
+                        (food.x - v.x < 0 && this.direction === "left"))) ||
+                (v.x === food.x &&
+                    ((v.y - food.y > 0 && this.direction === "up") ||
+                        (v.y - food.y < 0 && this.direction === "down")))
             ) {
                 drawEyes();
             } else {
