@@ -1,9 +1,10 @@
+import Vector from "./Vector";
+
 var Food = function (args = {}) {
     var defaults = {
         game: null,
         color: "red",
-        x: 0,
-        y: 0,
+        v: new Vector(),
         r: 0,
     };
 
@@ -20,7 +21,7 @@ var Food = function (args = {}) {
 };
 
 Food.prototype.draw = function () {
-    var pos = this.game.getPosition(this.x, this.y);
+    var pos = this.game.getPosition(this.v.x, this.v.y);
     var r = this.r;
 
     this.game.ctx.save();
