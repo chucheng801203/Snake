@@ -202,23 +202,23 @@ Snake.prototype.drawBody = function (v, r, color, isHead) {
 
             if (this.game.food.length > 1) {
                 this.game.food.forEach(function (fv) {
-                    l.push(v.sub(new Vector(fv.x, fv.y)).length());
+                    l.push(v.sub(fv.v).length());
                 });
 
                 food = this.game.food[l.indexOf(Math.min.apply(null, l))];
             }
 
             if (
-                (v.y === food.y &&
-                    ((food.x - v.x > 0 && this.direction === "right") ||
-                        (food.x - v.x < 0 && this.direction === "left"))) ||
-                (v.x === food.x &&
-                    ((v.y - food.y > 0 && this.direction === "up") ||
-                        (v.y - food.y < 0 && this.direction === "down")))
+                (v.y === food.v.y &&
+                    ((food.v.x - v.x > 0 && this.direction === "right") ||
+                        (food.v.x - v.x < 0 && this.direction === "left"))) ||
+                (v.x === food.v.x &&
+                    ((v.y - food.v.y > 0 && this.direction === "up") ||
+                        (v.y - food.v.y < 0 && this.direction === "down")))
             ) {
                 drawEyes();
             } else {
-                var foodPos = this.game.getPosition(food.x, food.y);
+                var foodPos = this.game.getPosition(food.v.x, food.v.y);
                 var eyePos = new Vector(pos.x + r - r / 2, pos.y + r - r / 2);
 
                 drawFocusEye(foodPos, eyePos, new Vector(0 - r / 2, 0 - r / 2));

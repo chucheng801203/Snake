@@ -48,8 +48,7 @@ Game.prototype.generateFood = function () {
     this.food.push(
         new Food({
             game: this,
-            x: x,
-            y: y,
+            v: new Vector(x, y),
         })
     );
 };
@@ -93,10 +92,10 @@ Game.prototype.update = function () {
             }
         });
 
-        this.food.forEach((v, i) => {
+        this.food.forEach((f, i) => {
             if (
-                Math.abs(v.x - this.snake.head.x) < this.snake.step / 2 &&
-                Math.abs(v.y - this.snake.head.y) < this.snake.step / 2
+                Math.abs(f.v.x - this.snake.head.x) < this.snake.step / 2 &&
+                Math.abs(f.v.y - this.snake.head.y) < this.snake.step / 2
             ) {
                 this.snake.maxLength += 2;
                 this.food.splice(i, 1);
