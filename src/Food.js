@@ -1,16 +1,27 @@
-var Food = function (game, v) {
-    this.game = game;
-    this.color = "red";
-    this.x = v.x;
-    this.y = v.y;
+var Food = function (args = {}) {
+    var defaults = {
+        game: null,
+        color: "red",
+        x: 0,
+        y: 0,
+        r: 0,
+    };
+
+    for (const argName in defaults) {
+        if (Object.hasOwnProperty.call(defaults, argName)) {
+            this[argName] = args[argName] ? args[argName] : defaults[argName];
+        }
+    }
 
     this.scale = 0.4;
     this.time = 0;
+
+    this.r = this.r === 0 ? this.game.bw / 2 : this.r;
 };
 
 Food.prototype.draw = function () {
     var pos = this.game.getPosition(this.x, this.y);
-    var r = this.game.bw / 2;
+    var r = this.r;
 
     this.game.ctx.save();
     this.game.ctx.translate(pos.x + r, pos.y + r);

@@ -1,17 +1,25 @@
 import Vector from "./Vector.js";
 
-var Snake = function (game) {
-    this.game = game;
-    this.body = [];
-    this.head = new Vector();
-    this.maxLength = 30;
-    this.step = 0.1;
-    this.speed = new Vector(this.step, 0);
-    this.color = "#9500f8";
-    this.direction = "right";
+var Snake = function (args = {}) {
+    var defaults = {
+        game: null,
+        body: [],
+        head: new Vector(),
+        maxLength: 30,
+        step: 0.1,
+        color: "#9500f8",
+        direction: "right",
+        directionQueue: [],
+        maxdirectionQueueLength: 2,
+    };
 
-    this.directionQueue = [];
-    this.maxdirectionQueueLength = 2;
+    for (const argName in defaults) {
+        if (Object.hasOwnProperty.call(defaults, argName)) {
+            this[argName] = args[argName] ? args[argName] : defaults[argName];
+        }
+    }
+
+    this.speed = this.getDirectionSpeed(this.direction);
 };
 
 Snake.prototype.update = function () {

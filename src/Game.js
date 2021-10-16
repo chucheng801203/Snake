@@ -2,15 +2,23 @@ import Food from "./Food.js";
 import Snake from "./Snake.js";
 import Vector from "./Vector.js";
 
-var Game = function () {
-    this.bw = 30;
-    this.bs = 0;
-    this.gameWidth = 20;
-    this.bgColor = ["#e4e4e4", "#dbdbdb"];
-    this.snake = null;
-    this.snakeDefaultLength = 0;
-    this.start = false;
-    this.food = [];
+var Game = function (args = {}) {
+    var defaults = {
+        bw: 30,
+        bs: 0,
+        gameWidth: 20,
+        bgColor: ["#e4e4e4", "#dbdbdb"],
+        snake: null,
+        snakeDefaultLength: 0,
+        start: false,
+        food: [],
+    };
+
+    for (const argName in defaults) {
+        if (Object.hasOwnProperty.call(defaults, argName)) {
+            this[argName] = args[argName] ? args[argName] : defaults[argName];
+        }
+    }
 };
 
 Game.prototype.init = function () {
@@ -39,7 +47,13 @@ Game.prototype.drawBlock = function (v, color) {
 Game.prototype.generateFood = function () {
     var x = parseInt(Math.random() * this.gameWidth);
     var y = parseInt(Math.random() * this.gameWidth);
-    this.food.push(new Food(this, new Vector(x, y)));
+    this.food.push(
+        new Food({
+            game: this,
+            x: x,
+            y: y,
+        })
+    );
 };
 
 Game.prototype.render = function () {
@@ -117,7 +131,9 @@ Game.prototype.gameEnd = function () {
 };
 
 Game.prototype.gameStart = function () {
-    this.snake = new Snake(this);
+    this.snake = new Snake({
+        game: this,
+    });
     this.snakeDefaultLength = this.snake.maxLength;
     this.food = [];
     this.generateFood();
