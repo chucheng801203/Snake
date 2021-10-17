@@ -45,6 +45,11 @@ Game.prototype.init = function () {
         this.bw * this.gameWidth + this.bs * (this.gameWidth - 1);
     this.canvas.height = this.canvas.width;
 
+    this.score.innerHTML = "Score: 0";
+    this.score.style.display = "none";
+    this.panel.style.display = "flex";
+    this.title.style.display = "block";
+
     this.drawBg();
 };
 
