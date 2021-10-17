@@ -60,9 +60,3 @@ function throttle(func, wait) {
         }
     };
 }
-
-document
-    .querySelector("#game .start-btn")
-    .addEventListener("click", function () {
-        game && game.gameStart();
-    });
