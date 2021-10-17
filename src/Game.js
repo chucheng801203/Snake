@@ -9,6 +9,11 @@ var Game = function (args = {}) {
     this.score = document.querySelector("#game .panel .score");
     this.panel = document.querySelector("#game .panel");
     this.title = document.querySelector("#game .title");
+    this.startBtn = document.querySelector("#game .start-btn");
+    
+    this.startBtn.addEventListener("click", () => {
+        this.gameStart();
+    });
 
     this.init();
 };
