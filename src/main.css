@@ -24,8 +24,8 @@ body {
     display: block;
     color: rgba(75, 2, 158, 0.227);
     box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.3);
-    max-width: calc(100% - 16px) !important;
-    max-height: calc(100% - 16px) !important;
+    max-width: calc(100% - 32px) !important;
+    max-height: calc(100% - 32px) !important;
     border: 8px solid #dbdbdb;
     background-color: #dbdbdb;
     border-radius: 16px;
