@@ -20,12 +20,7 @@ body {
     justify-content: center;
     flex-direction: column;
 }
-#game {
-    position: relative;
-    max-width: calc(100% - 16px) !important;
-    max-height: calc(100% - 16px) !important;
-}
-#game .mycanvas {
+#mycanvas {
     display: block;
     color: rgba(75, 2, 158, 0.227);
     box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.3);
@@ -36,7 +31,7 @@ body {
     border-radius: 16px;
     overflow: hidden;
 }
-#game .panel {
+#panel {
     position: absolute;
     display: flex;
     left: 0;
@@ -49,7 +44,7 @@ body {
     border-radius: 16px;
     background-color: rgba(0, 0, 0, 0.6);
 }
-#game .start-btn {
+#panel .start-btn {
     padding: 12px 24px;
     border: none;
     border-radius: 8px;
@@ -60,10 +55,10 @@ body {
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.3);
     cursor: pointer;
 }
-#game .start-btn:hover {
+#panel .start-btn:hover {
     background-color: #000;
 }
-#game .panel .score {
+#panel .score {
     display: none;
     font-size: 24px;
     font-weight: bold;
@@ -72,22 +67,22 @@ body {
     font-family: Arial, Helvetica, sans-serif;
     color: white;
 }
-#game .title {
+#panel .title {
     margin: 0 0 8px;
-    font-size: 32px;
+    font-size: 28px;
     color: white;
 }
 
 @media (min-width: 576px) {
-    #game .title {
+    #panel .title {
         font-size: 40px;
     }
 
-    #game .start-btn {
+    #panel .start-btn {
         font-size: 22px;
     }
 
-    #game .panel .score {
+    #panel .panel .score {
         font-size: 32px;
     }
 }

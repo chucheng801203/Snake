@@ -5,11 +5,11 @@ import Vector from "./Vector.js";
 var Game = function (args = {}) {
     this.args = args;
 
-    this.canvas = document.querySelector("#game .mycanvas");
-    this.score = document.querySelector("#game .panel .score");
-    this.panel = document.querySelector("#game .panel");
-    this.title = document.querySelector("#game .title");
-    this.startBtn = document.querySelector("#game .start-btn");
+    this.canvas = document.querySelector("#mycanvas");
+    this.panel = document.querySelector("#panel");
+    this.score = document.querySelector("#panel .score");
+    this.title = document.querySelector("#panel .title");
+    this.startBtn = document.querySelector("#panel .start-btn");
     
     this.startBtn.addEventListener("click", () => {
         this.gameStart();
