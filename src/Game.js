@@ -1,6 +1,5 @@
-import Food from "./Food.js";
-import Snake from "./Snake.js";
 import Vector from "./Vector.js";
+import SingleMode from "./modes/SingleMode.js";
 
 var Game = function (args = {}) {
     this.args = args;
@@ -10,9 +9,11 @@ var Game = function (args = {}) {
     this.score = document.querySelector("#panel .score");
     this.title = document.querySelector("#panel .title");
     this.startBtn = document.querySelector("#panel .start-btn");
-    
+    this.mode = null;
+
     this.startBtn.addEventListener("click", () => {
-        this.gameStart();
+        this.mode = new SingleMode(this);
+        this.mode.gameStart();
     });
 
     this.init();
@@ -24,9 +25,7 @@ Game.prototype.initArgs = function (args = {}) {
         bs: 0,
         gameWidth: 20,
         bgColor: ["#e4e4e4", "#dbdbdb"],
-        snake: null,
         start: false,
-        food: [],
     };
 
     for (const argName in defaults) {
@@ -34,9 +33,7 @@ Game.prototype.initArgs = function (args = {}) {
             this[argName] = args[argName] ? args[argName] : defaults[argName];
         }
     }
-
-    this.snakeDefaultLength = undefined;
-}
+};
 
 Game.prototype.init = function () {
     this.initArgs(this.args);
@@ -73,132 +70,6 @@ Game.prototype.drawBg = function () {
             );
         }
     }
-};
-
-Game.prototype.generateFood = function () {
-    var pos = this.getRandomPosition();
-
-    while (this.checkObstacle(pos.x, pos.y)) {
-        pos = this.getRandomPosition();
-    }
-
-    this.food.push(
-        new Food({
-            game: this,
-            v: pos,
-        })
-    );
-};
-
-Game.prototype.checkObstacle = function (x, y) {
-    var check = (v) =>
-        Math.abs(x - v.x) < this.snake.step / 1000 &&
-        Math.abs(y - v.y) < this.snake.step / 1000;
-
-    if (check(this.snake.head)) {
-        return true;
-    }
-
-    var body = this.snake.body;
-    for (var i = 0; i < body.length; i++) {
-        if (check(body[i])) {
-            return true;
-        }
-    }
-
-    for (var i = 0; i < this.food.length; i++) {
-        if (check(this.food[i])) {
-            return true;
-        }
-    }
-
-    return false;
-};
-
-Game.prototype.getRandomPosition = function () {
-    var x = parseInt(Math.random() * this.gameWidth);
-    var y = parseInt(Math.random() * this.gameWidth);
-
-    return new Vector(x, y);
-};
-
-Game.prototype.render = function () {
-    if (this.start) {
-        this.drawBg();
-
-        this.snake && this.snake.draw();
-    
-        this.food.forEach((f) => {
-            f.draw();
-        });
-    
-        requestAnimationFrame(() => {
-            this.render();
-        });
-    }
-};
-
-Game.prototype.update = function () {
-    if (this.start) {
-        this.snake.update();
-
-        if (!this.snake.checkBoundary(this.gameWidth)) {
-            this.gameEnd();
-        }
-
-        this.snake.body.forEach((v) => {
-            if (
-                Math.abs(v.x - this.snake.head.x) < this.snake.step / 1000 &&
-                Math.abs(v.y - this.snake.head.y) < this.snake.step / 1000
-            ) {
-                this.gameEnd();
-            }
-        });
-
-        this.food.forEach((f, i) => {
-            if (
-                Math.abs(f.v.x - this.snake.head.x) < this.snake.step / 2 &&
-                Math.abs(f.v.y - this.snake.head.y) < this.snake.step / 2
-            ) {
-                this.snake.maxLength += 2;
-                this.food.splice(i, 1);
-                this.generateFood();
-            }
-        });
-
-        var speed = this.snake ? parseInt(20 - this.snake.maxLength * 0.1) + 1 : 30;
-        setTimeout(
-            () => {
-                this.update();
-            },
-            speed < 7 ? 7 : speed
-        );
-    }
-};
-
-Game.prototype.gameEnd = function () {
-    this.start = false;
-
-    var length = this.snake.body.length;
-    var score = (length - this.snakeDefaultLength) * 5;
-    this.score.innerHTML = "Score: " + (score >= 0 ? score : 0);
-    this.score.style.display = "block";
-    this.panel.style.display = "flex";
-};
-
-Game.prototype.gameStart = function () {
-    this.snake = new Snake({
-        game: this,
-    });
-    this.snakeDefaultLength = this.snake.maxLength;
-    this.food = [];
-    this.generateFood();
-    this.start = true;
-    this.panel.style.display = "none";
-    this.title.style.display = "none";
-
-    this.update();
-    this.render();
 };
 
 export default Game;

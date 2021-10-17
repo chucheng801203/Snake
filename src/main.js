@@ -5,7 +5,7 @@ import "./main.css";
 var game = new Game();
 
 window.addEventListener("keydown", function (e) {
-    game.start && game.snake.setDirection(e.key.replace("Arrow", ""));
+    game.start && game.mode.snake.setDirection(e.key.replace("Arrow", ""));
 });
 
 var mousePos = new Vector();
@@ -28,17 +28,17 @@ var touchMoveHandle = throttle(function (e) {
         if (Math.abs(d.x) > Math.abs(d.y)) {
             if (Math.abs(d.x) > 10) {
                 if (d.x > 0) {
-                    game.snake.setDirection("right");
+                    game.mode.snake.setDirection("right");
                 } else {
-                    game.snake.setDirection("left");
+                    game.mode.snake.setDirection("left");
                 }
             }
         } else {
             if (Math.abs(d.y) > 10) {
                 if (d.y > 0) {
-                    game.snake.setDirection("down");
+                    game.mode.snake.setDirection("down");
                 } else {
-                    game.snake.setDirection("up");
+                    game.mode.snake.setDirection("up");
                 }
             }
         }

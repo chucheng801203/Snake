@@ -7,7 +7,7 @@ var Snake = function (args = {}) {
         head: new Vector(),
         maxLength: 30,
         step: 0.1,
-        color: "#9500f8",
+        color: "hsl(" + parseInt(359 * Math.random() + 1) + ", 70%, 50%)",
         direction: "right",
         directionQueue: [],
         maxdirectionQueueLength: 2,
@@ -196,16 +196,16 @@ Snake.prototype.drawBody = function (v, r, color, isHead) {
             this.game.ctx.fill();
         };
 
-        if (this.game.food.length > 0) {
+        if (this.game.mode.food.length > 0) {
             var l = [];
-            var food = this.game.food[0];
+            var food = this.game.mode.food[0];
 
-            if (this.game.food.length > 1) {
-                this.game.food.forEach(function (fv) {
+            if (this.game.mode.food.length > 1) {
+                this.game.mode.food.forEach(function (fv) {
                     l.push(v.sub(fv.v).length());
                 });
 
-                food = this.game.food[l.indexOf(Math.min.apply(null, l))];
+                food = this.game.mode.food[l.indexOf(Math.min.apply(null, l))];
             }
 
             if (
