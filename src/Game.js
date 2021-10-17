@@ -4,10 +4,16 @@ import Vector from "./Vector.js";
 
 var Game = function (args = {}) {
     this.args = args;
+
+    this.canvas = document.querySelector("#game .mycanvas");
+    this.score = document.querySelector("#game .panel .score");
+    this.panel = document.querySelector("#game .panel");
+    this.title = document.querySelector("#game .title");
+
     this.init();
 };
 
-Game.prototype.initArgs = function (args) {
+Game.prototype.initArgs = function (args = {}) {
     var defaults = {
         bw: 30,
         bs: 0,
@@ -29,7 +35,6 @@ Game.prototype.initArgs = function (args) {
 
 Game.prototype.init = function () {
     this.initArgs(this.args);
-    this.canvas = document.querySelector("#game .mycanvas");
     this.ctx = this.canvas.getContext("2d");
     this.canvas.width =
         this.bw * this.gameWidth + this.bs * (this.gameWidth - 1);
@@ -165,11 +170,10 @@ Game.prototype.gameEnd = function () {
     this.start = false;
 
     var length = this.snake.body.length;
-    var scoreElem = document.querySelector("#game .panel .score");
     var score = (length - this.snakeDefaultLength) * 5;
-    scoreElem.innerHTML = "Score: " + (score >= 0 ? score : 0);
-    scoreElem.style.display = "block";
-    document.querySelector("#game .panel").style.display = "flex";
+    this.score.innerHTML = "Score: " + (score >= 0 ? score : 0);
+    this.score.style.display = "block";
+    this.panel.style.display = "flex";
 };
 
 Game.prototype.gameStart = function () {
@@ -180,8 +184,8 @@ Game.prototype.gameStart = function () {
     this.food = [];
     this.generateFood();
     this.start = true;
-    document.querySelector("#game .panel").style.display = "none";
-    document.querySelector("#game .title").style.display = "none";
+    this.panel.style.display = "none";
+    this.title.style.display = "none";
 
     this.update();
     this.render();
