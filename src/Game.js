@@ -12,6 +12,8 @@ const Game = function (args = {}) {
     this.mode = null;
 
     this.startBtn.addEventListener("click", () => {
+        if (this.start && this.mode) this.mode.gameEnd();
+
         this.mode = new SingleMode(this);
         this.mode.gameStart();
     });

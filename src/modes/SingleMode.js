@@ -1,11 +1,16 @@
 import Vector from "../Vector";
 import Food from "../Food";
 import Snake from "../Snake";
+import { floatSub } from "../utils";
 
 const SingleMode = function (game) {
     this.game = game;
     this.snake = null;
     this.food = [];
+
+    this.fps = 80;
+    this.maxFps = 180;
+    this.timeoutId = null;
 };
 
 SingleMode.prototype.generateFood = function () {
@@ -24,9 +29,7 @@ SingleMode.prototype.generateFood = function () {
 };
 
 SingleMode.prototype.checkObstacle = function (x, y) {
-    const check = (v) =>
-        Math.abs(x - v.x) < this.snake.step / 1000 &&
-        Math.abs(y - v.y) < this.snake.step / 1000;
+    const check = (v) => floatSub(x, v.x) === 0 && floatSub(y, v.y) === 0;
 
     if (check(this.snake.head)) {
         return true;
@@ -56,63 +59,65 @@ SingleMode.prototype.getRandomPosition = function () {
 };
 
 SingleMode.prototype.render = function () {
-    if (this.game.start) {
-        this.game.drawBg();
-
-        this.snake && this.snake.draw();
-
-        this.food.forEach((f) => {
-            f.draw();
-        });
-
-        requestAnimationFrame(() => {
-            this.render();
-        });
+    if (!this.game.start) {
+        return;
     }
+
+    const fpsInterval = 1000 / this.fps;
+
+    this.timeoutId = setTimeout(() => {
+        this.render();
+    }, fpsInterval);
+
+    this.update();
+
+    this.game.drawBg();
+
+    this.snake && this.snake.draw();
+
+    this.food.forEach((f) => {
+        f.draw();
+    });
 };
 
 SingleMode.prototype.update = function () {
-    if (this.game.start) {
-        this.snake.update();
+    if (!this.game.start) {
+        return;
+    }
 
-        if (!this.snake.checkBoundary(this.game.gameWidth)) {
+    this.snake.update();
+
+    if (!this.snake.checkBoundary(this.game.gameWidth)) {
+        this.gameEnd();
+    }
+
+    this.snake.body.forEach((v) => {
+        if (
+            floatSub(v.x, this.snake.head.x) === 0 &&
+            floatSub(v.y, this.snake.head.y) === 0
+        ) {
             this.gameEnd();
         }
+    });
 
-        this.snake.body.forEach((v) => {
-            if (
-                Math.abs(v.x - this.snake.head.x) < this.snake.step / 1000 &&
-                Math.abs(v.y - this.snake.head.y) < this.snake.step / 1000
-            ) {
-                this.gameEnd();
+    this.food.forEach((f, i) => {
+        if (
+            floatSub(f.v.x, this.snake.head.x) === 0 &&
+            floatSub(f.v.y, this.snake.head.y) === 0
+        ) {
+            if (this.fps < this.maxFps) {
+                this.fps += 1;
             }
-        });
-
-        this.food.forEach((f, i) => {
-            if (
-                Math.abs(f.v.x - this.snake.head.x) < this.snake.step / 2 &&
-                Math.abs(f.v.y - this.snake.head.y) < this.snake.step / 2
-            ) {
-                this.snake.maxLength += 2;
-                this.food.splice(i, 1);
-                this.generateFood();
-            }
-        });
-
-        const speed = this.snake
-            ? parseInt(20 - this.snake.maxLength * 0.1) + 1
-            : 30;
-        setTimeout(
-            () => {
-                this.update();
-            },
-            speed < 7 ? 7 : speed
-        );
-    }
+            this.snake.maxLength += 2;
+            this.food.splice(i, 1);
+            this.generateFood();
+        }
+    });
 };
 
 SingleMode.prototype.gameEnd = function () {
     this.game.start = false;
+    clearTimeout(this.timeoutId);
 
     const length = this.snake.body.length;
     const score = (length - this.snakeDefaultLength) * 5;
@@ -132,7 +137,6 @@ SingleMode.prototype.gameStart = function () {
     this.game.panel.style.display = "none";
     this.game.title.style.display = "none";
 
-    this.update();
     this.render();
 };
 
