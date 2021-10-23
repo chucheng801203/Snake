@@ -23,12 +23,7 @@ const Snake = function (args = {}) {
 };
 
 Snake.prototype.update = function () {
-    const intX = Math.round(this.head.x);
-    const intY = Math.round(this.head.y);
-    const dx = Math.abs(intX - this.head.x);
-    const dy = Math.abs(intY - this.head.y);
-    if (dx < this.step / 2 && dy < this.step / 2) {
-        this.head.set(intX, intY);
+    if (Number.isInteger(this.head.x) && Number.isInteger(this.head.y)) {
         const direction = this.directionQueue.shift();
         if (direction) {
             this.direction = direction;
@@ -83,9 +78,9 @@ Snake.prototype.getDirectionSpeed = function (direction) {
         case "right":
             return new Vector(this.step, 0);
         case "left":
-            return new Vector(-1 * this.step, 0);
+            return new Vector(-this.step, 0);
         case "up":
-            return new Vector(0, -1 * this.step);
+            return new Vector(0, -this.step);
         case "down":
             return new Vector(0, this.step);
     }
