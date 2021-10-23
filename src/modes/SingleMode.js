@@ -2,14 +2,14 @@ import Vector from "../Vector";
 import Food from "../Food";
 import Snake from "../Snake";
 
-var SingleMode = function (game) {
+const SingleMode = function (game) {
     this.game = game;
     this.snake = null;
     this.food = [];
 };
 
 SingleMode.prototype.generateFood = function () {
-    var pos = this.getRandomPosition();
+    let pos = this.getRandomPosition();
 
     while (this.checkObstacle(pos.x, pos.y)) {
         pos = this.getRandomPosition();
@@ -24,7 +24,7 @@ SingleMode.prototype.generateFood = function () {
 };
 
 SingleMode.prototype.checkObstacle = function (x, y) {
-    var check = (v) =>
+    const check = (v) =>
         Math.abs(x - v.x) < this.snake.step / 1000 &&
         Math.abs(y - v.y) < this.snake.step / 1000;
 
@@ -32,14 +32,14 @@ SingleMode.prototype.checkObstacle = function (x, y) {
         return true;
     }
 
-    var body = this.snake.body;
-    for (var i = 0; i < body.length; i++) {
+    const body = this.snake.body;
+    for (let i = 0; i < body.length; i++) {
         if (check(body[i])) {
             return true;
         }
     }
 
-    for (var i = 0; i < this.food.length; i++) {
+    for (let i = 0; i < this.food.length; i++) {
         if (check(this.food[i])) {
             return true;
         }
@@ -49,8 +49,8 @@ SingleMode.prototype.checkObstacle = function (x, y) {
 };
 
 SingleMode.prototype.getRandomPosition = function () {
-    var x = parseInt(Math.random() * this.game.gameWidth);
-    var y = parseInt(Math.random() * this.game.gameWidth);
+    const x = parseInt(Math.random() * this.game.gameWidth);
+    const y = parseInt(Math.random() * this.game.gameWidth);
 
     return new Vector(x, y);
 };
@@ -99,7 +99,7 @@ SingleMode.prototype.update = function () {
             }
         });
 
-        var speed = this.snake
+        const speed = this.snake
             ? parseInt(20 - this.snake.maxLength * 0.1) + 1
             : 30;
         setTimeout(
@@ -114,8 +114,8 @@ SingleMode.prototype.update = function () {
 SingleMode.prototype.gameEnd = function () {
     this.game.start = false;
 
-    var length = this.snake.body.length;
-    var score = (length - this.snakeDefaultLength) * 5;
+    const length = this.snake.body.length;
+    const score = (length - this.snakeDefaultLength) * 5;
     this.game.score.innerHTML = "Score: " + (score >= 0 ? score : 0);
     this.game.score.style.display = "block";
     this.game.panel.style.display = "flex";

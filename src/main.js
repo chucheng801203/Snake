@@ -2,13 +2,13 @@ import Game from "./Game.js";
 import Vector from "./Vector.js";
 import "./main.css";
 
-var game = new Game();
+const game = new Game();
 
 window.addEventListener("keydown", function (e) {
     game.start && game.mode.snake.setDirection(e.key.replace("Arrow", ""));
 });
 
-var mousePos = new Vector();
+let mousePos = new Vector();
 window.addEventListener("touchstart", function (e) {
     if (e.changedTouches.length > 0) {
         mousePos = new Vector(
@@ -18,13 +18,13 @@ window.addEventListener("touchstart", function (e) {
     }
 });
 
-var touchMoveHandle = throttle(function (e) {
+const touchMoveHandle = throttle(function (e) {
     if (game.start && e.changedTouches.length > 0) {
-        var newPos = new Vector(
+        const newPos = new Vector(
             e.changedTouches[0].pageX,
             e.changedTouches[0].pageY
         );
-        var d = newPos.sub(mousePos);
+        const d = newPos.sub(mousePos);
         if (Math.abs(d.x) > Math.abs(d.y)) {
             if (Math.abs(d.x) > 10) {
                 if (d.x > 0) {
@@ -51,9 +51,9 @@ window.addEventListener("touchmove", function (e) {
 });
 
 function throttle(func, wait) {
-    var n = Date.now();
+    let n = Date.now();
     return function (e) {
-        var now = Date.now();
+        const now = Date.now();
         if (now - n > wait) {
             func(e);
             n = now;

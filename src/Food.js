@@ -1,7 +1,7 @@
 import Vector from "./Vector";
 
-var Food = function (args = {}) {
-    var defaults = {
+const Food = function (args = {}) {
+    const defaults = {
         game: null,
         color: "red",
         v: new Vector(),
@@ -21,34 +21,35 @@ var Food = function (args = {}) {
 };
 
 Food.prototype.draw = function () {
-    var pos = this.game.getPosition(this.v.x, this.v.y);
-    var r = this.r;
+    const pos = this.game.getPosition(this.v.x, this.v.y);
+    const r = this.r;
+    const ctx = this.game.ctx;
 
-    this.game.ctx.save();
-    this.game.ctx.translate(pos.x + r, pos.y + r);
-    this.game.ctx.scale(this.scale, this.scale);
-    this.game.ctx.beginPath();
-    this.game.ctx.shadowOffsetX = 0;
-    this.game.ctx.shadowOffsetY = 2;
-    this.game.ctx.shadowBlur = 4;
-    this.game.ctx.shadowColor = "rgba(0, 0, 0, 0.3)";
-    this.game.ctx.fillStyle = this.color;
-    this.game.ctx.arc(0, Math.sin(this.time / 30) * 2 - 2, r, 0, Math.PI * 2);
-    this.game.ctx.fill();
-    this.game.ctx.beginPath();
-    this.game.ctx.strokeStyle = "rgba(255, 255, 255, 0.4)";
-    this.game.ctx.lineWidth = 5;
-    this.game.ctx.lineCap = "round";
-    this.game.ctx.shadowColor = "rgba(0, 0, 0, 0)";
-    this.game.ctx.arc(
+    ctx.save();
+    ctx.translate(pos.x + r, pos.y + r);
+    ctx.scale(this.scale, this.scale);
+    ctx.beginPath();
+    ctx.shadowOffsetX = 0;
+    ctx.shadowOffsetY = 2;
+    ctx.shadowBlur = 4;
+    ctx.shadowColor = "rgba(0, 0, 0, 0.3)";
+    ctx.fillStyle = this.color;
+    ctx.arc(0, Math.sin(this.time / 30) * 2 - 2, r, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.beginPath();
+    ctx.strokeStyle = "rgba(255, 255, 255, 0.4)";
+    ctx.lineWidth = 5;
+    ctx.lineCap = "round";
+    ctx.shadowColor = "rgba(0, 0, 0, 0)";
+    ctx.arc(
         0,
         Math.sin(this.time / 30) * 2 - 2,
         (r * 2) / 3,
         -0.95 * Math.PI,
         -0.6 * Math.PI
     );
-    this.game.ctx.stroke();
-    this.game.ctx.restore();
+    ctx.stroke();
+    ctx.restore();
 
     if (this.scale < 0.8) {
         this.scale *= 1.2;

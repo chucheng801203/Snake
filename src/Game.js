@@ -1,7 +1,7 @@
 import Vector from "./Vector.js";
 import SingleMode from "./modes/SingleMode.js";
 
-var Game = function (args = {}) {
+const Game = function (args = {}) {
     this.args = args;
 
     this.canvas = document.querySelector("#mycanvas");
@@ -20,7 +20,7 @@ var Game = function (args = {}) {
 };
 
 Game.prototype.initArgs = function (args = {}) {
-    var defaults = {
+    const defaults = {
         bw: 30,
         bs: 0,
         gameWidth: 20,
@@ -55,15 +55,15 @@ Game.prototype.getPosition = function (x, y) {
 };
 
 Game.prototype.drawBlock = function (v, color) {
-    var pos = this.getPosition(v.x, v.y);
+    const pos = this.getPosition(v.x, v.y);
 
     this.ctx.fillStyle = color;
     this.ctx.fillRect(pos.x, pos.y, this.bw, this.bw);
 };
 
 Game.prototype.drawBg = function () {
-    for (var y = 0; y < this.gameWidth; y++) {
-        for (var x = 0; x < this.gameWidth; x++) {
+    for (let y = 0; y < this.gameWidth; y++) {
+        for (let x = 0; x < this.gameWidth; x++) {
             this.drawBlock(
                 new Vector(x, y),
                 this.bgColor[(y + x) % this.bgColor.length]

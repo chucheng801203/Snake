@@ -1,7 +1,7 @@
 import Vector from "./Vector.js";
 
-var Snake = function (args = {}) {
-    var defaults = {
+const Snake = function (args = {}) {
+    const defaults = {
         game: null,
         body: [],
         head: new Vector(),
@@ -23,20 +23,20 @@ var Snake = function (args = {}) {
 };
 
 Snake.prototype.update = function () {
-    var intX = Math.round(this.head.x);
-    var intY = Math.round(this.head.y);
-    var dx = Math.abs(intX - this.head.x);
-    var dy = Math.abs(intY - this.head.y);
+    const intX = Math.round(this.head.x);
+    const intY = Math.round(this.head.y);
+    const dx = Math.abs(intX - this.head.x);
+    const dy = Math.abs(intY - this.head.y);
     if (dx < this.step / 2 && dy < this.step / 2) {
         this.head.set(intX, intY);
-        var direction = this.directionQueue.shift();
+        const direction = this.directionQueue.shift();
         if (direction) {
             this.direction = direction;
             this.setSpeed(this.direction);
         }
     }
 
-    var newHead = this.head.add(this.speed);
+    const newHead = this.head.add(this.speed);
     this.body.push(this.head);
     this.head = newHead;
 
@@ -53,13 +53,13 @@ Snake.prototype.setDirection = function (d) {
         return;
     }
 
-    var direction = this.direction;
+    let direction = this.direction;
     if (this.directionQueue.length !== 0) {
         direction = this.directionQueue[this.directionQueue.length - 1];
     }
 
-    var nowSpeed = this.getDirectionSpeed(direction);
-    var speed = this.getDirectionSpeed(d);
+    const nowSpeed = this.getDirectionSpeed(direction);
+    const speed = this.getDirectionSpeed(d);
     if (
         Math.abs(speed.x) === Math.abs(nowSpeed.x) &&
         Math.abs(speed.y) === Math.abs(nowSpeed.y)
@@ -71,7 +71,7 @@ Snake.prototype.setDirection = function (d) {
 };
 
 Snake.prototype.setSpeed = function (direction) {
-    var target = this.getDirectionSpeed(direction);
+    const target = this.getDirectionSpeed(direction);
 
     if (target) {
         this.speed = target;
@@ -94,82 +94,83 @@ Snake.prototype.getDirectionSpeed = function (direction) {
 };
 
 Snake.prototype.checkBoundary = function (gameWidth) {
-    var xInWidth = this.head.x > -1 && this.head.x < gameWidth;
-    var yInWidth = this.head.y > -1 && this.head.y < gameWidth;
+    const xInWidth = this.head.x > -1 && this.head.x < gameWidth;
+    const yInWidth = this.head.y > -1 && this.head.y < gameWidth;
 
     return xInWidth && yInWidth;
 };
 
 Snake.prototype.draw = function () {
-    var d = this.game.bw / 8 / this.body.length;
+    const d = this.game.bw / 8 / this.body.length;
     this.body.forEach((v, i) => {
-        var r = this.game.bw / 2 - d * (this.body.length - i);
+        const r = this.game.bw / 2 - d * (this.body.length - i);
         this.drawBody(v, r, this.color, i === this.body.length - 1);
     });
 };
 
 Snake.prototype.drawBody = function (v, r, color, isHead) {
-    var pos = this.game.getPosition(v.x, v.y);
+    const pos = this.game.getPosition(v.x, v.y);
+    const ctx = this.game.ctx;
 
-    this.game.ctx.save();
-    this.game.ctx.translate(pos.x + this.game.bw / 2, pos.y + this.game.bw / 2);
-    this.game.ctx.scale(0.85, 0.85);
-    this.game.ctx.beginPath();
-    this.game.ctx.fillStyle = color;
-    this.game.ctx.arc(0, 0, r, 0, Math.PI * 2);
-    this.game.ctx.fill();
+    ctx.save();
+    ctx.translate(pos.x + this.game.bw / 2, pos.y + this.game.bw / 2);
+    ctx.scale(0.85, 0.85);
+    ctx.beginPath();
+    ctx.fillStyle = color;
+    ctx.arc(0, 0, r, 0, Math.PI * 2);
+    ctx.fill();
 
     if (isHead) {
         if (this.direction === "top") {
-            this.game.ctx.rotate(0 * Math.PI);
+            ctx.rotate(0 * Math.PI);
         } else if (this.direction === "right") {
-            this.game.ctx.rotate(Math.PI / 2);
+            ctx.rotate(Math.PI / 2);
         } else if (this.direction === "left") {
-            this.game.ctx.rotate((Math.PI / 2) * -1);
+            ctx.rotate((Math.PI / 2) * -1);
         } else if (this.direction === "down") {
-            this.game.ctx.rotate(Math.PI * -1);
+            ctx.rotate(Math.PI * -1);
         }
 
-        this.game.ctx.fillStyle = "white";
-        this.game.ctx.beginPath();
-        this.game.ctx.arc(0 - r / 2, 0 - r / 2, r / 2, 0, Math.PI * 2);
-        this.game.ctx.fill();
+        ctx.fillStyle = "white";
+        ctx.beginPath();
+        ctx.arc(0 - r / 2, 0 - r / 2, r / 2, 0, Math.PI * 2);
+        ctx.fill();
 
-        this.game.ctx.beginPath();
-        this.game.ctx.arc(0 + r / 2, 0 - r / 2, r / 2, 0, Math.PI * 2);
-        this.game.ctx.fill();
+        ctx.beginPath();
+        ctx.arc(0 + r / 2, 0 - r / 2, r / 2, 0, Math.PI * 2);
+        ctx.fill();
 
-        this.game.ctx.fillStyle = "black";
+        ctx.fillStyle = "black";
         // 畫向前看的眼睛
-        var drawEyes = () => {
-            this.game.ctx.beginPath();
-            this.game.ctx.arc(
+        const drawEyes = () => {
+            ctx.beginPath();
+            ctx.arc(
                 0 + (r * 1) / 2,
                 0 - (r * 2) / 3 - 2,
                 r / 4,
                 0,
                 Math.PI * 2
             );
-            this.game.ctx.fill();
+            ctx.fill();
 
-            this.game.ctx.beginPath();
-            this.game.ctx.arc(
+            ctx.beginPath();
+            ctx.arc(
                 0 - (r * 1) / 2,
                 0 - (r * 2) / 3 - 2,
                 r / 4,
                 0,
                 Math.PI * 2
             );
-            this.game.ctx.fill();
+            ctx.fill();
         };
 
-        var drawFocusEye = (foodPos, eyePos, eyeCenter) => {
-            var dxy = eyePos.sub(foodPos);
-            var length = dxy.length();
-            var sin = dxy.y / length;
-            var cos = dxy.x / length;
+        const drawFocusEye = (foodPos, eyePos, eyeCenter) => {
+            const dxy = eyePos.sub(foodPos);
+            const length = dxy.length();
+            const sin = dxy.y / length;
+            const cos = dxy.x / length;
 
-            this.game.ctx.beginPath();
+            ctx.beginPath();
             if (this.direction === "up") {
                 eyeCenter.set(
                     eyeCenter.x - (cos * r) / 4,
@@ -192,13 +193,13 @@ Snake.prototype.drawBody = function (v, r, color, isHead) {
                 );
             }
 
-            this.game.ctx.arc(eyeCenter.x, eyeCenter.y, r / 4, 0, Math.PI * 2);
-            this.game.ctx.fill();
+            ctx.arc(eyeCenter.x, eyeCenter.y, r / 4, 0, Math.PI * 2);
+            ctx.fill();
         };
 
         if (this.game.mode.food.length > 0) {
-            var l = [];
-            var food = this.game.mode.food[0];
+            const l = [];
+            let food = this.game.mode.food[0];
 
             if (this.game.mode.food.length > 1) {
                 this.game.mode.food.forEach(function (fv) {
@@ -218,8 +219,8 @@ Snake.prototype.drawBody = function (v, r, color, isHead) {
             ) {
                 drawEyes();
             } else {
-                var foodPos = this.game.getPosition(food.v.x, food.v.y);
-                var eyePos = new Vector(pos.x + r - r / 2, pos.y + r - r / 2);
+                const foodPos = this.game.getPosition(food.v.x, food.v.y);
+                let eyePos = new Vector(pos.x + r - r / 2, pos.y + r - r / 2);
 
                 drawFocusEye(foodPos, eyePos, new Vector(0 - r / 2, 0 - r / 2));
 
@@ -232,7 +233,7 @@ Snake.prototype.drawBody = function (v, r, color, isHead) {
         }
     }
 
-    this.game.ctx.restore();
+    ctx.restore();
 };
 
 export default Snake;
